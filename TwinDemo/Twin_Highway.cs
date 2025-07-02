@@ -22,7 +22,10 @@ namespace Twin.Connector
 					new TwinAirSensor("T1-SB-AIR-1"),
 					new TwinAirSensor("T1-SB-AIR-2"),
 					new TwinAirSensor("T1-SB-AIR-3"),
-			};
+
+					new TwinCameraSensor("T1-SB-CAM-1")
+
+            };
 
 			UpdateCurrentData();
 		}
@@ -138,7 +141,53 @@ namespace Twin.Connector
 		}
 	}
 
-	public static class DataUpdateHelpers
+    public class TwinCameraSensor : ITwinSensor
+    {
+        public bool Crisis { get; set; }
+        public string Id => id;
+        private string id;
+
+        public TwinCameraSensor(string id)
+        {
+            this.id = id;
+
+			CurrentPictureUrl = picUrls[0];
+
+            UpdateData();
+        }
+
+		public string CurrentPictureUrl = "";
+
+		public List<string> picUrls = new List<string>()
+		{
+            "https://drive.google.com/uc?export=download&id=1HTHv1kZw5EtlqhbVeCNm8X5fKY0g2AKk",
+            "https://drive.google.com/uc?export=download&id=1wMVCbzDBSrAdqMmgZhRaj4-RUseBTBqE",
+            "https://drive.google.com/uc?export=download&id=1qDmhAwUyVNbSJl0l1mIU7mNdVBoc7a_b",
+            "https://drive.google.com/uc?export=download&id=1E4wqraSTEmRCaKnQSu4XvkH1zB6mRvd9",
+        };
+
+        public int CurrPictureIndex;
+
+		private const int countToWaitToSwapPic = 3;
+		private int counter = 0;
+
+        public void UpdateData()
+        {
+			if(counter < countToWaitToSwapPic)
+			{
+				counter++;
+				return;
+			}
+
+			counter = 0;
+			CurrPictureIndex++;
+			if (CurrPictureIndex >= picUrls.Count)
+				CurrPictureIndex = 0;
+			CurrentPictureUrl = picUrls[CurrPictureIndex];
+        }
+    }
+
+    public static class DataUpdateHelpers
 	{
 		private static Random r = new Random();
 		public static double GetRandomNumberInRange(double minNumber, double maxNumber)

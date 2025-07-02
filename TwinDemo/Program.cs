@@ -8,7 +8,7 @@ internal class Program
 	private static async Task Main(string[] args)
 	{
 		Console.WriteLine("Please enter your domain:");
-		string server = Console.ReadLine();
+		string server = "cav.dev.cavrn.us";//Console.ReadLine();
 		Console.WriteLine("Starting up Cavrnus...");
 
 		CavrnusFunctionLibrary.InitializeCavrnus(false);
@@ -28,7 +28,7 @@ internal class Program
 		}
 
 		Console.WriteLine("Please enter space Join ID:");
-		string spaceJoinId = Console.ReadLine();
+		string spaceJoinId = "twin-demo";//Console.ReadLine();
 
 		Console.WriteLine("Authenticated, connecting to space...");
 
@@ -89,7 +89,13 @@ internal class Program
 				spaceConn.PostFloatPropertyUpdate(tempSensor.Id, "Temp-C", (float)tempSensor.CurrTemperatureC);
 				//Console.WriteLine($"Posting {tempSensor.Id} Temperature {tempSensor.CurrTemperatureC} C");
 			}
-		}
+            if (sensor is TwinCameraSensor camSensor)
+            {
+                spaceConn.PostStringPropertyUpdate(camSensor.Id, "Picture", camSensor.CurrentPictureUrl);
+
+                //Console.WriteLine($"Posting {tempSensor.Id} Temperature {tempSensor.CurrTemperatureC} C");
+            }
+        }
 
 		PollAndSend(spaceConn);
 	}
