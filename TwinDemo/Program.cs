@@ -75,25 +75,44 @@ internal class Program
 		{
 			if (sensor is TwinAirSensor airSensor)
 			{
-				spaceConn.PostBoolPropertyUpdate(airSensor.Id, "Crisis", airSensor.Crisis);
+				if (spaceConn.GetBoolPropertyValue(airSensor.Id, "Crisis") != airSensor.Crisis)
+				{
+					spaceConn.PostBoolPropertyUpdate(airSensor.Id, "Crisis", airSensor.Crisis);
+                    //Console.WriteLine($"Posting {airSensor.Id} Crisis {airSensor.Crisis}");
+                }
 
-				spaceConn.PostFloatPropertyUpdate(airSensor.Id, "CO-ppm", (float)airSensor.CurrCOppm);
-				//Console.WriteLine($"Posting {airSensor.Id} CO {airSensor.CurrCOppm} ppm");
-				spaceConn.PostFloatPropertyUpdate(airSensor.Id, "NO2-ppb", (float)airSensor.CurrNO2ppb);
-				//Console.WriteLine($"Posting {airSensor.Id} NO2 {airSensor.CurrNO2ppb} ppb");
+                if (spaceConn.GetFloatPropertyValue(airSensor.Id, "CO-ppm") != (float) airSensor.CurrCOppm)
+				{
+					spaceConn.PostFloatPropertyUpdate(airSensor.Id, "CO-ppm", (float)airSensor.CurrCOppm);
+                    //Console.WriteLine($"Posting {airSensor.Id} CO {airSensor.CurrCOppm} ppm");
+                }
+				if (spaceConn.GetFloatPropertyValue(airSensor.Id, "NO2-ppb") != (float)airSensor.CurrNO2ppb)
+				{
+					spaceConn.PostFloatPropertyUpdate(airSensor.Id, "NO2-ppb", (float)airSensor.CurrNO2ppb);
+                    //Console.WriteLine($"Posting {airSensor.Id} NO2 {airSensor.CurrNO2ppb} ppb");
+                }
 			}
 			if (sensor is TwinTempSensor tempSensor)
 			{
-				spaceConn.PostBoolPropertyUpdate(tempSensor.Id, "Crisis", tempSensor.Crisis);
+				if (spaceConn.GetBoolPropertyValue(tempSensor.Id, "Crisis") != tempSensor.Crisis)
+				{
+					spaceConn.PostBoolPropertyUpdate(tempSensor.Id, "Crisis", tempSensor.Crisis);
+                    //Console.WriteLine($"Posting {tempSensor.Id} Crisis {tempSensor.Crisis}");
+                }
 
-				spaceConn.PostFloatPropertyUpdate(tempSensor.Id, "Temp-C", (float)tempSensor.CurrTemperatureC);
-				//Console.WriteLine($"Posting {tempSensor.Id} Temperature {tempSensor.CurrTemperatureC} C");
+				if (spaceConn.GetFloatPropertyValue(tempSensor.Id, "Temp-C") != (float)tempSensor.CurrTemperatureC)
+				{
+					spaceConn.PostFloatPropertyUpdate(tempSensor.Id, "Temp-C", (float)tempSensor.CurrTemperatureC);
+                    //Console.WriteLine($"Posting {tempSensor.Id} Temperature {tempSensor.CurrTemperatureC} C");
+                }
 			}
             if (sensor is TwinCameraSensor camSensor)
             {
-                spaceConn.PostStringPropertyUpdate(camSensor.Id, "Picture", camSensor.CurrentPictureUrl);
-
-                //Console.WriteLine($"Posting {tempSensor.Id} Temperature {tempSensor.CurrTemperatureC} C");
+				if (spaceConn.GetStringPropertyValue(camSensor.Id, "Picture") != camSensor.CurrentPictureUrl)
+				{
+					spaceConn.PostStringPropertyUpdate(camSensor.Id, "Picture", camSensor.CurrentPictureUrl);
+                    //Console.WriteLine($"Posting {camSensor.Id} Picture {camSensor.CurrentPictureUrl}");
+                }
             }
         }
 

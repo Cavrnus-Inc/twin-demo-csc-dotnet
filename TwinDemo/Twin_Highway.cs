@@ -57,7 +57,7 @@ namespace Twin.Connector
 
 		private async Task UpdateCurrentData()
 		{
-			await Task.Delay(3000);
+			await Task.Delay(6000);
 
 			foreach (var sensor in AllSensors)
 			{
@@ -198,7 +198,10 @@ namespace Twin.Connector
 		public static double WobbleNumberInRange(double currValue, double minNumber, double maxNumber, double step)
 		{
 			if (currValue < minNumber || currValue > maxNumber)
-				return GetRandomNumberInRange(minNumber, maxNumber);
+			{
+				var res = GetRandomNumberInRange(minNumber, maxNumber);
+                return Math.Round(res, 2, MidpointRounding.AwayFromZero);
+            }
 
 			var adjustedStep = GetRandomNumberInRange(step - .1, step + .1);
 			if (r.Next(0, 2) > 0)
@@ -206,7 +209,9 @@ namespace Twin.Connector
 			else
 				currValue -= adjustedStep;
 
-			return Math.Min(maxNumber, Math.Max(minNumber, currValue));
+            currValue = Math.Round(currValue, 2, MidpointRounding.AwayFromZero);
+
+            return Math.Min(maxNumber, Math.Max(minNumber, currValue));
 		}
 	}
 }
